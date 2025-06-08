@@ -62,8 +62,12 @@ class DeepSeekR1LocalConnector(ABC):
     def _add_user_message(self, content: str) -> str:
         """
         Adds a user message to the chat history.
+
         Args:
             content (str): The content of the user message.
+
+        Returns:
+            str: The same content that was added.
         """
         self._add_to_chat_history("user", content)
         return content
@@ -71,8 +75,12 @@ class DeepSeekR1LocalConnector(ABC):
     def _add_assistant_message(self, content: str) -> str:
         """
         Adds an assistant message to the chat history.
+
         Args:
             content (str): The content of the assistant message.
+
+        Returns:
+            str: The cleaned content that was added.
         """
         if not content:
             raise ValueError("Content cannot be empty.") 
@@ -84,9 +92,11 @@ class DeepSeekR1LocalConnector(ABC):
     def __strip_special_characters(self, content: str) -> str:
         """
         Strips special characters from the content, specifically the <think> tags used by DeepSeek R1.
+
         Args:
             content (str): The content to be stripped.
-            Returns:
+
+        Returns:
             str: The cleaned content without special characters.
         """
         # as per 8th of June, 2025 - the DeepSeek R1 still returns the reasoning process in the response, enclosed in <think></think> pair of tags.
@@ -103,13 +113,13 @@ class DeepSeekR1LocalConnector(ABC):
             self._system_behavior = system_behavior
 
     @abstractmethod
-    def ask(self, request: str) -> str | None:
+    def ask(self, request: str) -> str:
         """
         Sends a request to the LLM and returns the response.
         
         Args:
             request (str): The message to send to the LLM.
-        
+
         Returns:
             str: The response from the LLM.
         """
@@ -118,7 +128,9 @@ class DeepSeekR1LocalConnector(ABC):
     def reset_chat_history(self):
         """
         Resets the chat history.
+
+        Returns:
+            None
         """
         self._chat_history = []
         self._add_to_chat_history("system", self._system_behavior)
-            

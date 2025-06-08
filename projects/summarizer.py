@@ -16,7 +16,7 @@ class DeepSeekR1Summarizer(DeepSeekR1LocalConnector):
                                           "You will be given a text and you need to summarize it in a concise manner."
                                           "You will respond with concise summary of a text and bullet list of main subjects covered in the text, that was provided by user."))
 
-    def ask(self, request: str) -> str | None:
+    def ask(self, request: str) -> str:
         """
         Sends a request to the LLM and returns the response.
         Args:
