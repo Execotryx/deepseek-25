@@ -1,4 +1,3 @@
-from ollama import chat, ChatResponse
 from abc import ABC, abstractmethod
 import re
 
@@ -27,10 +26,20 @@ class DeepSeekR1LocalConnector(ABC):
 
     @property
     def _chat_history(self) -> list[dict[str, str]]:
+        """
+        Returns the chat history.
+        Returns:
+            list[dict[str, str]]: The chat history containing messages with roles and content.
+        """
         return self.__chat_history
 
     @_chat_history.setter
     def _chat_history(self, value: list[dict[str, str]]):
+        """
+        Sets the chat history to a new value.
+        Args:
+            value (list[dict[str, str]]): The new chat history to set.
+        """
         if value[0]["role"] != "system":
             self._add_to_chat_history("system", self._system_behavior)
         self.__chat_history.extend(value)
