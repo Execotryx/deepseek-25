@@ -1,5 +1,6 @@
 from deepseek_connector import DeepSeekR1LocalConnector
 from ollama import chat, ChatResponse
+import gradio as gr
 
 class DeepSeekR1Summarizer(DeepSeekR1LocalConnector):
     """
@@ -25,7 +26,7 @@ class DeepSeekR1Summarizer(DeepSeekR1LocalConnector):
         """
         if not request or request.strip() == "":
             raise ValueError("Request cannot be empty.")
-        prompt: str = (f"Please summarize the following text:\n\n{request}\n\n")
+        prompt: str = (f"Summarize the following text:\n\n{request}\n\n")
         self._add_user_message(prompt)
         response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
         if response.message.content:
@@ -33,11 +34,16 @@ class DeepSeekR1Summarizer(DeepSeekR1LocalConnector):
         else:
             raise ValueError("No content in the response from the model.")
 
+
+summarizer = DeepSeekR1Summarizer()
+text_to_summarize = "Several open-source-friendly BCIs can be purchased outside the USA at prices well below the NexStem Instinct ($2 499). Notable options include OpenBCI (Ganglion and Cyton boards with Ultracortex headsets), NexStem 16-Channel headset, and BrainBit (MINDO headband and Callibri sensor). Each platform provides permissive SDKs (MIT, BSD-3-Clause, or BSD-style) with full raw-data access and ships globally (including Europe, Asia, and beyond). Additionally, DIY boards like FreeEEG32 and hybrid systems such as g.tec’s Unicorn Hybrid are available internationally, though Unicorn Hybrid is more expensive. Below, we outline each device’s key features, pricing, licensing, and shipping information to help you identify cost-effective, developer-friendly BCIs outside the USA."
+summarizer_interface: gr.Interface = gr.Interface(
+    fn=summarizer.ask,
+    inputs=gr.Textbox(label="Text to Summarize", placeholder="Enter the text you want to summarize here..."),
+    outputs=gr.Textbox(label="Summary", placeholder="The summary will appear here..."),
+    title="DeepSeek R1 Text Summarizer",
+    description="This application uses the DeepSeek R1 model to summarize text. Enter the text you want to summarize in the input box and click 'Submit' to get the summary.",
+)
+    
 if __name__ == "__main__":
-    summarizer = DeepSeekR1Summarizer()
-    text_to_summarize = "Several open-source-friendly BCIs can be purchased outside the USA at prices well below the NexStem Instinct ($2 499). Notable options include OpenBCI (Ganglion and Cyton boards with Ultracortex headsets), NexStem 16-Channel headset, and BrainBit (MINDO headband and Callibri sensor). Each platform provides permissive SDKs (MIT, BSD-3-Clause, or BSD-style) with full raw-data access and ships globally (including Europe, Asia, and beyond). Additionally, DIY boards like FreeEEG32 and hybrid systems such as g.tec’s Unicorn Hybrid are available internationally, though Unicorn Hybrid is more expensive. Below, we outline each device’s key features, pricing, licensing, and shipping information to help you identify cost-effective, developer-friendly BCIs outside the USA."
-    try:
-        summary = summarizer.ask(text_to_summarize)
-        print("Summary:", summary)
-    except ValueError as e:
-        print("Error:", e)
+    summarizer_interface.launch()
