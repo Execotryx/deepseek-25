@@ -22,7 +22,7 @@ class DeepSeekR1LocalConnector(ABC):
     #endregion
 
     #region Chat History
-    __chat_history: list[dict[str, str]] = []
+    __chat_history: list[dict[str, str]] = [{"role": "system", "content": __system_behavior}]
 
     @property
     def _chat_history(self) -> list[dict[str, str]]:
@@ -40,8 +40,10 @@ class DeepSeekR1LocalConnector(ABC):
         Args:
             value (list[dict[str, str]]): The new chat history to set.
         """
-        if value[0]["role"] != "system":
-            self._add_to_chat_history("system", self._system_behavior)
+        # remove the system behavior from value if it exists.
+        if any(str(msg['role']).lower() == 'system' for msg in value):
+            value = [msg for msg in value if str(msg['role'].lower()) != 'system']
+        
         self.__chat_history.extend(value)
 
     def _add_to_chat_history(self, role: str, content: str) -> None:
@@ -54,18 +56,19 @@ class DeepSeekR1LocalConnector(ABC):
         role = role.lower().strip()
         if role not in ["system", "user", "assistant"]:
             raise ValueError("Role must be one of 'system', 'user', or 'assistant'.")
-        
+
         self.__chat_history.append({"role": role, "content": content})
 
-    def _add_user_message(self, content: str) -> None:
+    def _add_user_message(self, content: str) -> str:
         """
         Adds a user message to the chat history.
         Args:
             content (str): The content of the user message.
         """
         self._add_to_chat_history("user", content)
+        return content
 
-    def _add_assistant_message(self, content: str) -> None:
+    def _add_assistant_message(self, content: str) -> str:
         """
         Adds an assistant message to the chat history.
         Args:
@@ -76,6 +79,7 @@ class DeepSeekR1LocalConnector(ABC):
         content = self.__strip_special_characters(content)
         
         self._add_to_chat_history("assistant", content)
+        return content
 
     def __strip_special_characters(self, content: str) -> str:
         """
@@ -87,8 +91,7 @@ class DeepSeekR1LocalConnector(ABC):
         """
         # as per 8th of June, 2025 - the DeepSeek R1 still returns the reasoning process in the response, enclosed in <think></think> pair of tags.
         # For now we need explicitly strip them out.
-        content = re.sub(r'\<think\>\s(\w|\W)+\s\</think\>\s\s', "", content, flags=re.DOTALL)
-        return content.strip()
+        return re.sub(r'<think>\s+(?:\w|\W)*?\s+</think>', '', content, flags=re.IGNORECASE | re.MULTILINE).strip()
 
     #endregion
 
