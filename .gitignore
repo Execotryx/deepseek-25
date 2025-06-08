@@ -1,0 +1,74 @@
+# python gitignore file
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+# C extensions
+*.so
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+eggs-info/
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+# Unit test / coverage reports
+.coverage
+.coverage.*
+# Translations
+*.mo
+*.pot
+# Django stuff:
+*.log
+# Flask stuff:
+instance/
+# Scrapy stuff:
+.scrapy
+# Sphinx documentation
+docs/_build/
+# PyBuilder
+target/
+# PyCharm
+.idea/
+# VS Code
+.vscode/
+# Jupyter Notebook
+.ipynb_checkpoints
+# mypy
+.mypy_cache/
+# Pyre type checker
+.pyre/
+# pytype
+.pytype/
+# Cython debug symbols
+cython_debug/
+# PyInstaller
+*.spec
+# Pytest
+.cache
+# Coverage.py
+.coverage
+# Pytest cache
+.cache/
+# Pytest HTML reports
+*.html
+# Pytest XML reports
+*.xml
+# Pytest JSON reports
+*.json
+# Pytest JUnit XML reports
+*.junit.xml
+# Pytest coverage reports
+*.coverage.xml
+# Pytest coverage HTML reports
+*.coverage.html
+# Pytest coverage JSON reports
+*.coverage.json
+# Pytest coverage XML reports
+*.coverage.xml
+# Pytest coverage text reports
+*.coverage.txt
+# Pytest coverage data files
+*.coverage.data
