@@ -13,16 +13,25 @@ class DeepSeekR1NERExtractor(DeepSeekR1LocalConnector):
         "- Dates (type of entity: Date)\n"
         "- Other relevant information (type of entity: Other (classify as needed))\n"
         "Example of the response:\n"
+        "Given text:\n"
+        "\"Hangzhou DeepSeek Artificial Intelligence Basic Technology Research Co., Ltd., doing business as DeepSeek, is a Chinese artificial intelligence company that develops large language models (LLMs). Based in Hangzhou, Zhejiang, Deepseek is owned and funded by the Chinese hedge fund High-Flyer. DeepSeek was founded in July 2023 by Liang Wenfeng, the co-founder of High-Flyer, who also serves as the CEO for both companies. The company launched an eponymous chatbot alongside its DeepSeek-R1 model in January 2025.\"\n\n"
+        "Extracted named entities:\n"
         "- DeepSeek (Organization)\n"
-        "- Liang Wenfeng (Person)\n"
-        "Avoid including any additional text or explanations in your response.\n\n"
+        "- Hangzhou (Location)\n"
+        "- Zhejiang (Location)\n"
+        "- High-Flyer (Organization)\n"
+        "- July 2023 (Date)\n"
+        "- January 2025 (Date)\n"
+        "- Hangzhou DeepSeek Artificial Intelligence Basic Technology Research Co., Ltd. (Organization)\n"
+        "- DeepSeek-R1 (Other: Product name)\n"
+        "- Liang Wenfeng (Person)\n\n"
     )
 
     def __init__(self):
         super().__init__(system_behavior=self.SYSTEM_BEHAVIOR)
 
     def ask(self, request: str) -> str:
-        prompt = f"Extract named entities from the following text:\n\n{request}\n\n"
+        prompt = f"Given text:\n{request}\n\nExtracted named entities:\n"
         self._add_user_message(prompt)
         response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
         if response.message.content:
