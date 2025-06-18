@@ -25,7 +25,7 @@ class DeepSeekR1GrammarChecker(DeepSeekR1LocalConnector):
         else:
             raise ValueError("No content in the response from the model.")
 
-spellchecker_interface = gr.Interface(
+grammar_checker_interface: gr.Interface = gr.Interface(
     fn=DeepSeekR1GrammarChecker().ask,
     inputs=gr.Textbox(label="Text to Check", placeholder="Enter the text you want to check for grammar..."),
     outputs=gr.Textbox(label="Corrected Text"),
@@ -33,4 +33,4 @@ spellchecker_interface = gr.Interface(
     description="This tool checks the grammar of the provided text and returns the corrected version."
 )
 if __name__ == "__main__":
-    spellchecker_interface.launch()
+    grammar_checker_interface.launch()
