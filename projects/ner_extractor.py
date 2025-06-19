@@ -1,6 +1,6 @@
 import gradio as gr
 from deepseek_connector import DeepSeekR1LocalConnector
-from ollama import chat, ChatResponse
+from ollama import ChatResponse
 
 class DeepSeekR1NERExtractor(DeepSeekR1LocalConnector):
     SYSTEM_BEHAVIOR = (
@@ -31,9 +31,9 @@ class DeepSeekR1NERExtractor(DeepSeekR1LocalConnector):
         super().__init__(system_behavior=self.SYSTEM_BEHAVIOR)
 
     def ask(self, request: str) -> str:
-        prompt = f"Given text:\n{request}\n\nExtracted named entities:\n"
+        prompt = f"Given text:\n\"{request}\"\n\nExtracted named entities:\n"
         self._add_user_message(prompt)
-        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
+        response: ChatResponse = self._query()
         if response.message.content:
             return self._add_assistant_message(response.message.content)
         else:
@@ -48,4 +48,4 @@ ner_extractor_interface = gr.Interface(
     description="This tool extracts named entities from the provided text. It identifies people, organizations, locations, dates, and other relevant information."
 )
 if __name__ == "__main__":
-    ner_extractor_interface.launch()
+    ner_extractor_interface.queue().launch()

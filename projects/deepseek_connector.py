@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from ollama import chat, ChatResponse
 import re
 
 class DeepSeekR1LocalConnector(ABC):
@@ -124,6 +125,9 @@ class DeepSeekR1LocalConnector(ABC):
             str: The response from the LLM.
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
+
+    def _query(self) -> ChatResponse:
+        return chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
 
     def reset_chat_history(self):
         """
