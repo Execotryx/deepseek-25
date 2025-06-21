@@ -1,6 +1,5 @@
 import gradio as gr
 from deepseek_connector import DeepSeekR1LocalConnector
-from ollama import ChatResponse
 
 class DeepSeekR1NERExtractor(DeepSeekR1LocalConnector):
     SYSTEM_BEHAVIOR = (
