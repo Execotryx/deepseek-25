@@ -24,13 +24,13 @@ class DeepSeekR1SentimentAnalyzer(DeepSeekR1LocalConnector):
         return self._query()
 
 sentiment_analyzer: DeepSeekR1SentimentAnalyzer = DeepSeekR1SentimentAnalyzer()
-sentiment_analyzer_interface: gr.Interface = gr.Interface(
-    fn=sentiment_analyzer.ask,
-    inputs=gr.Textbox(label="Text to Analyze", placeholder="Enter the text you want to analyze here..."),
-    outputs=gr.Textbox(label="Sentiment Analysis Result", placeholder="The sentiment analysis result will appear here..."),
-    title="DeepSeek R1 Sentiment Analyzer",
-    description="This application uses the DeepSeek R1 model to analyze sentiment. Enter the text you want to analyze in the input box and click 'Submit' to get the sentiment analysis result.",
-)
 
 if __name__ == "__main__":
+    sentiment_analyzer_interface: gr.Interface = gr.Interface(
+        fn=sentiment_analyzer.ask,
+        inputs=gr.Textbox(label="Text to Analyze", placeholder="Enter the text you want to analyze here..."),
+        outputs=gr.Textbox(label="Sentiment Analysis Result", placeholder="The sentiment analysis result will appear here..."),
+        title="DeepSeek R1 Sentiment Analyzer",
+        description="This application uses the DeepSeek R1 model to analyze sentiment. Enter the text you want to analyze in the input box and click 'Submit' to get the sentiment analysis result.",
+    )
     sentiment_analyzer_interface.launch()
