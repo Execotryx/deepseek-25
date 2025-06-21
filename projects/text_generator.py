@@ -12,26 +12,11 @@ class DeepSeekR1TextGenerator(DeepSeekR1LocalConnector):
                                           "Your response should be in the Markdown format, if applicable."))
 
     def ask(self, request: str, word_limit: int = 500) -> str:
-        """
-        Generates a text response based on the user's request.
-
-        Args:
-            request (str): The user's request for text generation.
-            word_limit (int): The maximum number of words in the generated text.
-
-        Returns:
-            str: The generated text response.
-        """
-        request = f"Generate a text based on the following request in {word_limit} words:\n\n{request}\n\n"
-        
-        self._add_user_message(request)
-        
-        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
-        
-        if response.message.content:
-            return self._add_assistant_message(response.message.content)
-        else:
-            raise ValueError("No content in the response from the model.")
+        if not request or request.strip() == "":
+            raise ValueError("Request cannot be empty.")
+        prompt = f"Generate a text based on the following request in {word_limit} words:\n\n{request}\n\n"
+        self._add_user_message(prompt)
+        return self._query()
 
 # replace the Interface with Blocks layout
 generator = DeepSeekR1TextGenerator()
