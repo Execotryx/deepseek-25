@@ -3,6 +3,8 @@ from ollama import chat, ChatResponse
 import gradio as gr
 
 class DeepSeekR1GrammarChecker(DeepSeekR1LocalConnector):
+    """DeepSeek R1 Grammar Checker that corrects grammar mistakes in provided text."""
+
     def __init__(self):
         super().__init__(system_behavior=("You are an editor that checks the grammar of the text."
                                           "You will correct the grammar mistakes in the text provided by the user."
@@ -10,20 +12,22 @@ class DeepSeekR1GrammarChecker(DeepSeekR1LocalConnector):
                                           "If there are no mistakes, your response will contain ONLY the original text without changes."))
 
     def ask(self, request: str) -> str:
-        """
-        Checks the grammar of the provided text.
+        """Checks grammar of the provided text.
+
         Args:
             request (str): The text to be checked for grammar.
+
         Returns:
             str: The corrected text with grammar mistakes fixed.
+
+        Raises:
+            ValueError: If the request is empty.
         """
+        if not request or request.strip() == "":
+            raise ValueError("Request cannot be empty.")
         prompt = f"Check the grammar of the following text:\n\n{request}\n\n"
         self._add_user_message(prompt)
-        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
-        if response.message.content:
-            return self._add_assistant_message(response.message.content)
-        else:
-            raise ValueError("No content in the response from the model.")
+        return self._query()
 
 grammar_checker_interface: gr.Interface = gr.Interface(
     fn=DeepSeekR1GrammarChecker().ask,

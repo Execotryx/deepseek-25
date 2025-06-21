@@ -126,8 +126,12 @@ class DeepSeekR1LocalConnector(ABC):
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
 
-    def _query(self) -> ChatResponse:
-        return chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
+    def _query(self) -> str:
+        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
+        if response.message.content:
+            return self._add_assistant_message(response.message.content)
+        else:
+            raise ValueError("No content in the response from the model.")
 
     def reset_chat_history(self):
         """

@@ -28,11 +28,7 @@ class DeepSeekR1Summarizer(DeepSeekR1LocalConnector):
             raise ValueError("Request cannot be empty.")
         prompt: str = (f"Summarize the following text:\n\n{request}\n\n")
         self._add_user_message(prompt)
-        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
-        if response.message.content:
-            return self._add_assistant_message(response.message.content)
-        else:
-            raise ValueError("No content in the response from the model.")
+        return self._query()
 
 
 summarizer = DeepSeekR1Summarizer()
