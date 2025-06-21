@@ -23,7 +23,7 @@ class DeepSeekR1LocalConnector(ABC):
     #endregion
 
     #region Chat History
-    __chat_history: list[dict[str, str]] = [{"role": "system", "content": __system_behavior}]
+    __chat_history: list[dict[str, str]] = []
 
     @property
     def _chat_history(self) -> list[dict[str, str]]:
@@ -112,6 +112,7 @@ class DeepSeekR1LocalConnector(ABC):
         # no need to set the system behavior if it is not provided. Default one will do fine, as set in the class variable.
         if system_behavior:
             self._system_behavior = system_behavior
+        self._add_to_chat_history("system", self._system_behavior)
 
     @abstractmethod
     def ask(self, request: str) -> str:
