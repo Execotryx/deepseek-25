@@ -107,9 +107,20 @@ class DeepSeekR1LocalConnector(ABC):
     #endregion
 
     MODEL_ID: str = "deepseek-r1:8b"
+    __model_id: str = MODEL_ID
 
-    def __init__(self, system_behavior: str = "") -> None:
+    @property
+    def _model_id(self) -> str:
+        return self.__model_id
+
+    @_model_id.setter
+    def _model_id(self, value: str):
+        cleaned = (value or "").strip()
+        self.__model_id = cleaned or self.MODEL_ID
+
+    def __init__(self, system_behavior: str = "", model_id: str = MODEL_ID) -> None:
         # no need to set the system behavior if it is not provided. Default one will do fine, as set in the class variable.
+        self._model_id = model_id
         if system_behavior:
             self._system_behavior = system_behavior
         self._add_to_chat_history("system", self._system_behavior)
@@ -128,7 +139,7 @@ class DeepSeekR1LocalConnector(ABC):
         raise NotImplementedError("This method should be implemented by subclasses.")
 
     def _query(self) -> str:
-        response: ChatResponse = chat(model=self.MODEL_ID, messages=self._chat_history, stream=False)
+        response: ChatResponse = chat(model=self._model_id, messages=self._chat_history, stream=False)
         if response.message.content:
             return self._add_assistant_message(response.message.content)
         else:
