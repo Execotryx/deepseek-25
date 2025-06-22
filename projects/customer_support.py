@@ -48,8 +48,8 @@ class CustomerSupportBot(DeepSeekR1LocalConnector):
             "Matching category: "
         )
         self._add_user_message(prompt)
-        category_of_question = self._query()
-        return self.__FAQ_DATABASE.get(category_of_question.lower(), "Sorry, I can't assist with that.")
+        category_of_question: str = self._query().strip().lower()
+        return self.__FAQ_DATABASE.get(category_of_question, "Sorry, I can't assist with that.")
 
 
 def customer_support_interface():
