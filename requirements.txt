@@ -1,2 +1,6 @@
 ollama
 gradio
+speechrecognition
+pyttsx3
+faster-whisper
+pyaudio
