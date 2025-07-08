@@ -72,3 +72,5 @@ cython_debug/
 *.coverage.txt
 # Pytest coverage data files
 *.coverage.data
+*.pem
+.gradio/
