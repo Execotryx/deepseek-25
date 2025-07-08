@@ -4,6 +4,7 @@ import speech_recognition as sr
 import pyttsx3 as tts
 from typing import Any
 from speech_recognizer import SpeechRecognizer
+import numpy as np
 
 class PersonalAIAssistant(DeepSeekR1LocalConnector):
     __tts_engine: tts.Engine = None # type: ignore
@@ -27,9 +28,9 @@ class PersonalAIAssistant(DeepSeekR1LocalConnector):
         self.__tts_engine = tts.init()
         self.__speech_recognizer = SpeechRecognizer()
 
-    def listen_for_request_and_ask_assistant(self, mic_data: list) -> str:
+    def listen_for_request_and_ask_assistant(self, mic_data: tuple) -> str:
         print(type(mic_data))
-        request: str = self.listen_for_request()
+        request: str = self.listen_for_request(audio=mic_data)
         if not request:
             return "No request received."
         response: str = self.ask(request)
@@ -37,8 +38,8 @@ class PersonalAIAssistant(DeepSeekR1LocalConnector):
         self._tts_engine.runAndWait()
         return response
 
-    def listen_for_request(self) -> str:
-        return self.__speech_recognizer.listen_for_request()
+    def listen_for_request(self, audio: list[int] | tuple[int, np.ndarray] | sr.AudioData | None = None) -> str:
+        return self.__speech_recognizer.listen_for_request(audio=audio)
 
     def ask(self, request: str) -> str:
         prompt = f"User: {request}\nAssistant:"
