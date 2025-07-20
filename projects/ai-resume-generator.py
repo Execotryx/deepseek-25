@@ -8,6 +8,10 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
         super().__init__(system_behavior=(
             "You are a helpful assistant specialized in crawling LinkedIn profiles."
             "Your goal is to help users extract relevant information from LinkedIn profiles."
+            "Before you can create resume - you will need to extract all relevant information from the LinkedIn profile."
+            "The mentioned information includes general information, education, experience, skills, and certifications."
+            "It will accumulated in the chat history."
+            "If some information from mentioned sections is not available, you will stop immediately."
             "Your response will be ONLY the extracted information in Markdown format."
         ))
 
