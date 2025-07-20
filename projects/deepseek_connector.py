@@ -22,6 +22,11 @@ class DeepSeekR1LocalConnector(ABC):
     
     #endregion
 
+    #region Constants
+    NEWLINE_SEPARATOR: str = "\n\n"
+    NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT: str = "\n\"\"\"\n"
+    #endregion
+
     #region Chat History
     __chat_history: list[dict[str, str]] = []
 
