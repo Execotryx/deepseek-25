@@ -17,7 +17,7 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
 
     def __get_general_information(self, profile_url: str) -> None:
         """Fetches and extracts general information from the given LinkedIn profile URL."""
-        response = requests.get(profile_url)
+        response: requests.Response = requests.get(profile_url)
         if response.status_code == 200:
             general_page: str = response.text
             prompt: str = (
@@ -32,7 +32,7 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
 
     def __get_skills_information(self, profile_url: str) -> None:
         """Fetches and extracts skills information from the LinkedIn profile's skills page."""
-        response = requests.get(f"{profile_url}/details/skills")
+        response: requests.Response = requests.get(f"{profile_url}/details/skills")
         if response.status_code == 200:
             skills_page: str = response.text
             prompt: str = (
@@ -108,5 +108,5 @@ class AIResumeGenerator(DeepSeekR1LocalConnector):
 
 if __name__ == "__main__":
     crawler: LinkedInCrawler = LinkedInCrawler()
-    info: str = crawler.ask("https://www.linkedin.com/in/viktoriya-perepletkina-934a26252")
+    info: str = crawler.ask("<put URL of LinkedIn profile here>")
     print(info)
