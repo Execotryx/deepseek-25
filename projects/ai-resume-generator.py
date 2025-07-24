@@ -17,7 +17,11 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
 
     def __get_general_information(self, profile_url: str) -> None:
         """Fetches and extracts general information from the given LinkedIn profile URL."""
+
+        #Such call is only for demonstration purposes, as LinkedIn does not allow scraping.
+        #In a real-world scenario, you would need to handle authentication and scraping more carefully.
         response: requests.Response = requests.get(profile_url)
+        
         if response.status_code == 200:
             general_page: str = response.text
             prompt: str = (
@@ -32,7 +36,11 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
 
     def __get_skills_information(self, profile_url: str) -> None:
         """Fetches and extracts skills information from the LinkedIn profile's skills page."""
+
+        #Such call is only for demonstration purposes, as LinkedIn does not allow scraping.
+        #In a real-world scenario, you would need to handle authentication and scraping more carefully.
         response: requests.Response = requests.get(f"{profile_url}/details/skills")
+        
         if response.status_code == 200:
             skills_page: str = response.text
             prompt: str = (
@@ -47,7 +55,11 @@ class LinkedInCrawler(DeepSeekR1LocalConnector):
 
     def __get_certifications_information(self, profile_url: str) -> None:
         """Fetches and extracts certifications information from the LinkedIn profile's certifications page."""
+
+        #Such call is only for demonstration purposes, as LinkedIn does not allow scraping.
+        #In a real-world scenario, you would need to handle authentication and scraping more carefully.
         response: requests.Response = requests.get(f"{profile_url}/details/certifications")
+
         if response.status_code == 200:
             certifications_page: str = response.text
             prompt: str = (
