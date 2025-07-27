@@ -22,11 +22,6 @@ class DeepSeekR1LocalConnector(ABC):
     
     #endregion
 
-    #region Constants
-    NEWLINE_SEPARATOR: str = "\n\n"
-    NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT: str = "\n\"\"\"\n"
-    #endregion
-
     #region Chat History
     __chat_history: list[dict[str, str]] = []
 
@@ -111,8 +106,16 @@ class DeepSeekR1LocalConnector(ABC):
 
     #endregion
 
+    #region Constants
+    """
+    Constants used in the DeepSeek R1 Local Connector.
+    These constants include the default system behavior, model ID, and newline separators.
+    """
     MODEL_ID: str = "deepseek-r1:8b"
     __model_id: str = MODEL_ID
+    NEWLINE_SEPARATOR: str = "\n\n"
+    NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT: str = "\n\"\"\"\n"
+    #endregion
 
     @property
     def _model_id(self) -> str:
@@ -149,6 +152,9 @@ class DeepSeekR1LocalConnector(ABC):
             return self._add_assistant_message(response.message.content)
         else:
             raise ValueError("No content in the response from the model.")
+
+    def _format_for_prompt(self, content: str) -> str:
+        return f"{self.NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT}{content}{self.NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT}"
 
     def reset_chat_history(self):
         """

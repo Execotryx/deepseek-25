@@ -8,26 +8,23 @@ class EmailTone(Enum):
     FRIENDLY = "friendly"
 
 class AIEmailResponseGenerator(DeepSeekR1LocalConnector):
-
-    def __format_for_prompt(self, content: str) -> str:
-        return f"{self.NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT}{content}{self.NEWLINE_SYNTACTIC_SEPARATOR_FOR_PROMPT}"
     
     def __init__(self, tone: EmailTone = EmailTone.FORMAL) -> None:
         examples = (
-            f"1. Email:{self.__format_for_prompt('I hope this email finds you well.')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('Thank you for your kind words. I hope you are doing well too.')}\n"
-            f"2. Email:{self.__format_for_prompt('Can you provide an update on the project?')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('Sure, I will get back to you with the latest updates shortly.')}\n"
-            f"3. Email:{self.__format_for_prompt('Let\'s catch up over coffee next week.')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('That sounds great! Let me know your available times.')}\n"
-            f"4. Email:{self.__format_for_prompt('I have attached the report for your review.')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('Thank you for sharing the report. I will review it and get back to you soon.')}\n"
-            f"5. Email:{self.__format_for_prompt('Hey, just want an update on the project\'s progress')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('Sure! The project is on track and we are making good progress. I will send you a detailed update by the end of the day.')}\n"
-            f"6. Email:{self.__format_for_prompt('I appreciate your help with this matter.')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('You are welcome! I am glad I could assist you.')}\n"
-            f"7. Email:{self.__format_for_prompt('Can we schedule a meeting to discuss this further?')}\n"
-            f"\tResponse to the email:{self.__format_for_prompt('Absolutely! Please let me know your available times and I will arrange the meeting.')}\n"
+            f"1. Email:{self._format_for_prompt('I hope this email finds you well.')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('Thank you for your kind words. I hope you are doing well too.')}\n"
+            f"2. Email:{self._format_for_prompt('Can you provide an update on the project?')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('Sure, I will get back to you with the latest updates shortly.')}\n"
+            f"3. Email:{self._format_for_prompt('Let\'s catch up over coffee next week.')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('That sounds great! Let me know your available times.')}\n"
+            f"4. Email:{self._format_for_prompt('I have attached the report for your review.')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('Thank you for sharing the report. I will review it and get back to you soon.')}\n"
+            f"5. Email:{self._format_for_prompt('Hey, just want an update on the project\'s progress')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('Sure! The project is on track and we are making good progress. I will send you a detailed update by the end of the day.')}\n"
+            f"6. Email:{self._format_for_prompt('I appreciate your help with this matter.')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('You are welcome! I am glad I could assist you.')}\n"
+            f"7. Email:{self._format_for_prompt('Can we schedule a meeting to discuss this further?')}\n"
+            f"\tResponse to the email:{self._format_for_prompt('Absolutely! Please let me know your available times and I will arrange the meeting.')}\n"
         )
         super().__init__(
             model_id="deepseek-r1:1.5b",
@@ -42,7 +39,7 @@ class AIEmailResponseGenerator(DeepSeekR1LocalConnector):
 
     def ask(self, request: str) -> str:
         prompt: str = (
-            f"Email:{self.__format_for_prompt(request)}"
+            f"Email:{self._format_for_prompt(request)}"
             "\tResponse to the email:\n"
         )
         self._add_user_message(prompt)
